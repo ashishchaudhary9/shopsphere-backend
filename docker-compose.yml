@@ -1,5 +1,14 @@
 services:
 
+  api-gateway:
+    build:
+      context: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - shopsphere-net
+
   nginx:
     image: nginx:latest
     container_name: nginx-lb
@@ -11,7 +20,6 @@ services:
       - api-gateway
     networks:
       - shopsphere-net
-
 
   postgres:
     image: postgres:15
@@ -72,6 +80,10 @@ services:
       - mongo
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/shopsphere_product_db
+
+networks:
+  shopsphere-net:
+    driver: bridge
 
 volumes:
   postgres_data:
